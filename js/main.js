@@ -6,6 +6,7 @@ window.onload = function() {
 function HuePreviewer() {
     
     this.ImageTexture = null;
+    this.Presets      = [];
     
     this.ViewContainer = document.getElementById('view-container');
     
@@ -31,6 +32,16 @@ function HuePreviewer() {
     this.InputGreenNumber.addEventListener('input', this.InputRGBGrayNumber_Update.bind(this));
     this.InputBlueNumber.addEventListener('input', this.InputRGBGrayNumber_Update.bind(this));
     this.InputGrayNumber.addEventListener('input', this.InputRGBGrayNumber_Update.bind(this));
+    
+    this.ButtonResetValues = document.getElementById('button-reset-values');
+    this.ButtonResetValues.addEventListener('click', this.ButtonResetValues_Click.bind(this));
+    
+    this.ButtonSavePreset = document.getElementById('button-save-preset');
+    this.ButtonCopyPreset = document.getElementById('button-copy-preset');
+    this.SavedPresets     = document.getElementById('saved-presets');
+    
+    this.ButtonSavePreset.addEventListener('click', this.ButtonSavePreset_Click.bind(this));
+    this.ButtonCopyPreset.addEventListener('click', this.ButtonCopyPreset_Click.bind(this));
 }
 
 HuePreviewer.InputImage_Change = function(event) {
@@ -146,4 +157,125 @@ HuePreviewer.InputRGBGrayNumber_Update = function() {
         Number(this.InputBlueNumber.value),
         Number(this.InputGrayNumber.value)
     );
+};
+
+HuePreviewer.UpdateFromPreset = function(preset) {
+    
+    this.InputRed.value   = this.InputRedNumber.value   = preset[0];
+    this.InputGreen.value = this.InputGreenNumber.value = preset[1];
+    this.InputBlue.value  = this.InputBlueNumber.value  = preset[2];
+    this.InputGray.value  = this.InputGrayNumber.value  = preset[3];
+    
+    if (!this.View)
+        return;
+    
+    this.View.SetTint(
+        preset[0],
+        preset[1],
+        preset[2],
+        preset[3]
+    );
+};
+
+HuePreviewer.ButtonResetValues_Click = function(e) {
+    
+    this.InputRed.value   = this.InputRedNumber.value   = 0;
+    this.InputGreen.value = this.InputGreenNumber.value = 0;
+    this.InputBlue.value  = this.InputBlueNumber.value  = 0;
+    this.InputGray.value  = this.InputGrayNumber.value  = 0;
+    
+    if (!this.View)
+        return;
+    
+    this.View.SetTint(0, 0, 0, 0);
+};
+
+HuePreviewer.ButtonSavePreset_Click = function(e) {
+    
+    var preset = [
+        Number(this.InputRed.value),
+        Number(this.InputGreen.value),
+        Number(this.InputBlue.value),
+        Number(this.InputGray.value)
+    ];
+    
+    HuePreviewer.AddPreset(preset);
+};
+
+HuePreviewer.ButtonCopyPreset_Click = function(e) {
+    
+    if (this.Presets.length === 0) {
+        
+        alert("There's no any saved presets yet.");
+        return;
+    }
+    
+    var result = '';
+    var position = 1;
+    
+    for (var palette of this.Presets) {
+        
+        result += position + ' : \n';
+        result += palette.ToString() + '\n\n';
+        
+        position++;
+    }
+    
+    var clipboard = document.createElement('textarea');
+    clipboard.value = result;
+    document.body.appendChild(clipboard);
+
+    clipboard.select();
+    document.execCommand("copy");
+    document.body.removeChild(clipboard);
+    
+    alert('Copied all presets information to clipboard.');
+};
+
+HuePreviewer.AddPreset = function(preset) {
+    
+    var palette = new Preset(preset);
+    
+    this.Presets.push(palette);
+    this.SavedPresets.appendChild(palette.Element);
+};
+
+function Preset(preset) {
+    
+    this.Preset = preset;
+    
+    this.Element = document.createElement('button');
+    this.Element.style.background = this.ToCssColor();
+    this.Element.addEventListener('click', this.Element_Click.bind(this));
+}
+
+Preset.prototype.Element_Click = function(e) {
+    
+    HuePreviewer.UpdateFromPreset(this.Preset);
+};
+
+Preset.prototype.ToString = function() {
+    
+    return '  Red : ' + this.Preset[0] + '\n'
+         + 'Green : ' + this.Preset[1] + '\n'
+         + ' Blue : ' + this.Preset[2] + '\n'
+         + ' Gray : ' + this.Preset[3];
+};
+
+Preset.prototype.ToCssColor = function() {
+    
+    var red   = ((this.Preset[0] + 255) / 510 * 255);
+    var green = ((this.Preset[1] + 255) / 510 * 255);
+    var blue  = ((this.Preset[2] + 255) / 510 * 255);
+    var gray = this.Preset[3];
+    
+    return 'linear-gradient(to right, ' + 
+           'rgb(' + red + ', 0, 0), ' + 
+           'rgb(' + red + ', 0, 0) 25%, ' + 
+           'rgb(0, ' + green + ', 0) 25%, ' + 
+           'rgb(0, ' + green + ', 0) 50%, ' + 
+           'rgb(0, 0, ' + blue + ') 50%, ' + 
+           'rgb(0, 0, ' + blue + ') 75%, ' + 
+           'rgb(' + gray + ', ' + gray + ', ' + gray + ') 75%, ' + 
+           'rgb(' + gray + ', ' + gray + ', ' + gray + '))';
 };

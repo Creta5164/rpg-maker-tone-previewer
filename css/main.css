@@ -84,6 +84,43 @@ a:visited {
     width: 50px;
 }
 
+#saved-presets {
+    
+    padding: 20px 100px;
+}
+
+#saved-presets>button {
+    
+    width: 48px;
+    height: 24px;
+    mix-blend-mode: add;
+    
+    margin: 10px;
+    
+    cursor: pointer;
+    
+    border-width: 3px;
+    border-style: solid;
+    border-color: gray;
+    border-radius: 5px;
+    
+    box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 1);
+}
+
+#saved-presets>button:hover {
+    
+    border-width: 1px;
+    margin: 8px 10px;
+    box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 1);
+}
+
+#saved-presets>button:active {
+    
+    border-width: 4px;
+    margin: 9px 10px;
+    box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 1);
+}
+
 .footer {
     
     padding: 32px 96px;
