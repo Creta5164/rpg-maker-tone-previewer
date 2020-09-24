@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RPG Maker tone previewer</title>
+        
+        <link rel='stylesheet' type='text/css' href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css"/>
+        <link rel="stylesheet" href="./css/main.css"/>
+    </head>
+    <body>
+        
+        <!-- Libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.8/pixi.js"></script>
+        <script src="./js/lib/JsExtensions.js"></script>
+        <script src="./js/lib/ToneFilter.js"></script>
+        
+        <!-- Source codes -->
+        <script src="./js/pixi-view.js"></script>
+        <script src="./js/main.js"></script>
+        
+        <div id="view-container">
+            
+        </div>
+        
+        <div class="controls">
+            
+            <span>Preview image : </span>
+            <input type="file" id="input-image" accept="image/png"/>
+            <br>
+            
+            <span class="r">Red : </span>
+            <input type="range"  id="input-red"        min="-255" max="255" value="0"/>
+            <input type="number" id="input-red-number" min="-255" max="255" value="0"/>
+            <br>
+            
+            <span class="g">Green : </span>
+            <input type="range"  id="input-green"        min="-255" max="255" value="0"/>
+            <input type="number" id="input-green-number" min="-255" max="255" value="0"/>
+            <br>
+            
+            <span class="b">Blue : </span>
+            <input type="range"  id="input-blue"        min="-255" max="255" value="0"/>
+            <input type="number" id="input-blue-number" min="-255" max="255" value="0"/>
+            <br>
+            
+            <span class="gray">Gray : </span>
+            <input type="range"  id="input-gray"        min="0" max="255" value="0"/>
+            <input type="number" id="input-gray-number" min="0" max="255" value="0"/>
+        </div>
+        
+        <div class="footer">
+            
+            RPG Maker tone previewer by Creta Park. <a target="_blank" href="https://github.com/creta5164/rpg-maker-tone-previewer">GitHub</a><br>
+            This site's source code is licensed under the <a href="https://github.com/creta5164/rpg-maker-tone-previewer/blob/master/LICENSE">MIT License</a>.
+            
+            <ul>
+                Used libraries : 
+                <li>pixi.js (4.8.8) (<a target="_blank" href="https://github.com/pixijs/pixi.js">GitHub</a>)</li>
+                <li>JsExtensions, ToneFilter from rpgtkoolmv/corescript (<a target="_blank" href="https://github.com/rpgtkoolmv/corescript">GitHub</a>)</li>
+                <li>Spoqa Han Sans (<a target="_blank" href="https://spoqa.github.io/spoqa-han-sans/en-US">Homepage</a>)</li>
+            </ul>
+            
+        </div>
+        
+    </body>
+</html>
